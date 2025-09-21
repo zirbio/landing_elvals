@@ -1,0 +1,118 @@
+export default function Landing() {
+    const RESERVA_URL = "https://bizum.link/tu-enlace"; // TODO: reemplaza por tu link real de Bizum
+  
+    return (
+      <div className="min-h-screen bg-[#F4E7E4] text-[#1F1F1F]">
+        {/* Barra fija CTA */}
+        <div className="fixed inset-x-0 bottom-0 z-40 bg-white/85 backdrop-blur supports-[backdrop-filter]:bg-white/70 border-t border-black/10">
+          <div className="mx-auto max-w-4xl flex items-center justify-between gap-4 px-4 py-3">
+            <p className="text-sm md:text-base">Asesoría Boutique • Sesión de <strong>60–90 min</strong> · Plazas limitadas</p>
+            <a href={RESERVA_URL} className="inline-flex items-center justify-center rounded-2xl px-5 py-3 shadow-sm border border-black/10 bg-[#1F1F1F] text-white hover:opacity-90 transition">
+              Reservar mi sesión
+            </a>
+          </div>
+        </div>
+  
+        {/* Contenido */}
+        <header className="mx-auto max-w-4xl px-4 pt-12 pb-6">
+          <div className="text-center">
+            <p className="tracking-[0.2em] text-xs md:text-sm uppercase">EL VALS DE LA NOVIA</p>
+            <h1 className="mt-3 text-4xl md:text-6xl font-serif">Asesoría Boutique</h1>
+            <p className="mt-4 text-lg md:text-xl italic max-w-2xl mx-auto">(60–90 min) – dejas tu boda preparada y lista en tan solo 1 hora*</p>
+            <div className="mt-6 flex items-center justify-center gap-3">
+              <a href={RESERVA_URL} className="rounded-2xl px-6 py-3 bg-[#1F1F1F] text-white shadow-sm hover:opacity-90 transition">Reservar mi sesión</a>
+              <a href="#como" className="rounded-2xl px-6 py-3 border border-black/10 bg-white/70 hover:bg-white transition">Cómo funciona</a>
+            </div>
+            <p className="mt-2 text-xs text-black/60">Pago vía Bizum.</p>
+            <p className="mt-3 text-xs text-black/60">*En la propia sesión de 60–90 min dejas tu boda <em>planificada</em>; después recibes una guía y selección cuidada para ejecutar sin estrés.</p>
+          </div>
+        </header>
+  
+        <main className="mx-auto max-w-4xl px-4 pb-28">
+          {/* ¿Qué es esto? */}
+          <section id="quees" className="rounded-2xl bg-white/70 p-6 md:p-8 shadow-sm border border-black/10">
+            <h2 className="text-2xl md:text-3xl font-serif mb-3">¿Qué es esto?</h2>
+            <p className="text-base md:text-lg leading-relaxed">
+              Una <strong>consultoría one‑to‑one</strong> para novias (y parejas) donde resolvemos tu primer gran bloqueo: por dónde empezar y qué proveedores elegir.
+              En una sesión de <strong>60–90 minutos</strong> definimos el estilo, prioridades y presupuesto realista, y te llevas tu boda <strong>diseñada a tu estilo y medida</strong>.
+            </p>
+          </section>
+  
+          {/* Qué incluye */}
+          <section id="incluye" className="mt-10 grid gap-4 md:gap-6">
+            <h2 className="text-2xl md:text-3xl font-serif">Qué incluye</h2>
+            <ul className="grid gap-3 md:grid-cols-3">
+              <li className="rounded-2xl bg-white/70 p-5 shadow-sm border border-black/10">
+                <p className="font-medium">Brief de estilo + prioridades</p>
+                <p className="text-sm mt-2 text-black/70">Aterrizamos tu visión (3 palabras clave, paleta y presupuesto orientativo).</p>
+              </li>
+              <li className="rounded-2xl bg-white/70 p-5 shadow-sm border border-black/10">
+                <p className="font-medium">Selección de proveedores esenciales</p>
+                <p className="text-sm mt-2 text-black/70">Shortlist cuidada (2–3 por categoría) con contacto y orden recomendado.</p>
+              </li>
+              <li className="rounded-2xl bg-white/70 p-5 shadow-sm border border-black/10">
+                <p className="font-medium">Guía de próximos pasos</p>
+                <p className="text-sm mt-2 text-black/70">Timeline 90 días + checklist. Entrega en <strong>7–10 días</strong> en PDF/Notion.</p>
+              </li>
+            </ul>
+          </section>
+  
+          {/* Cómo funciona */}
+          <section id="como" className="mt-12">
+            <h2 className="text-2xl md:text-3xl font-serif">Cómo funciona</h2>
+            <ol className="mt-4 grid gap-4 md:grid-cols-3">
+              <li className="rounded-2xl bg-white/70 p-5 shadow-sm border border-black/10">
+                <p className="text-sm uppercase tracking-wide text-black/60">Paso 1</p>
+                <h3 className="font-medium mt-1">Reserva + cuestionario (3–5 min)</h3>
+                <p className="text-sm mt-2 text-black/70">Paga por Bizum y elige día en el calendario. Completa un breve cuestionario con fecha, invitados, estilo y prioridades.</p>
+              </li>
+              <li className="rounded-2xl bg-white/70 p-5 shadow-sm border border-black/10">
+                <p className="text-sm uppercase tracking-wide text-black/60">Paso 2</p>
+                <h3 className="font-medium mt-1">Sesión 60–90 min (online, Zoom)</h3>
+                <p className="text-sm mt-2 text-black/70">Definimos estilo y presupuesto, resolvemos dudas y mapeamos proveedores. Sales con tu boda <em>diseñada a tu estilo y medida</em>.</p>
+              </li>
+              <li className="rounded-2xl bg-white/70 p-5 shadow-sm border border-black/10">
+                <p className="text-sm uppercase tracking-wide text-black/60">Paso 3</p>
+                <h3 className="font-medium mt-1">Guía personalizada en 7–10 días</h3>
+                <p className="text-sm mt-2 text-black/70">Recibes tu hoja de ruta + shortlist y próximos pasos listos para ejecutar sin estrés.</p>
+              </li>
+            </ol>
+            <div className="mt-6">
+              <a href={RESERVA_URL} className="inline-flex rounded-2xl px-6 py-3 bg-[#1F1F1F] text-white shadow-sm hover:opacity-90 transition">Reservar mi sesión</a>
+            </div>
+          </section>
+  
+          {/* FAQ */}
+          <section id="faq" className="mt-12">
+            <h2 className="text-2xl md:text-3xl font-serif">FAQ</h2>
+            <div className="mt-4 grid gap-4">
+              <div className="rounded-2xl bg-white/70 p-5 shadow-sm border border-black/10">
+                <h3 className="font-medium">¿La sesión es online?</h3>
+                <p className="text-sm mt-2 text-black/70">Las sesiones son 100% online por Zoom (cualquier ciudad). No realizo sesiones presenciales.</p>
+              </div>
+              <div className="rounded-2xl bg-white/70 p-5 shadow-sm border border-black/10">
+                <h3 className="font-medium">¿Cuándo recibo la guía y la selección de proveedores?</h3>
+                <p className="text-sm mt-2 text-black/70">Entre <strong>7 y 10 días</strong> tras la sesión. Te llegará por email en PDF o enlace a Notion, como prefieras.</p>
+              </div>
+              <div className="rounded-2xl bg-white/70 p-5 shadow-sm border border-black/10">
+                <h3 className="font-medium">Política de cambios y cancelaciones</h3>
+                <p className="text-sm mt-2 text-black/70">Puedes reprogramar gratis hasta 48 h antes. Cancelaciones con menos de 48 h implican un cargo del 50% por bloqueo de agenda.</p>
+              </div>
+              <div className="rounded-2xl bg-white/70 p-5 shadow-sm border border-black/10">
+                <h3 className="font-medium">¿Qué necesito de ti antes de la sesión?</h3>
+                <p className="text-sm mt-2 text-black/70">Un moodboard o 3 referencias de estilo, rango de presupuesto, ciudad/fecha deseada y tus 3 dudas principales.</p>
+              </div>
+            </div>
+            <div className="mt-6">
+              <a href={RESERVA_URL} className="inline-flex rounded-2xl px-6 py-3 bg-[#1F1F1F] text-white shadow-sm hover:opacity-90 transition">Reservar mi sesión</a>
+            </div>
+          </section>
+  
+          {/* Nota legal breve */}
+          <p className="mt-10 text-xs text-black/50">
+            Pago vía Bizum. Al reservar aceptas los términos del servicio y la política de privacidad (RGPD). La selección de proveedores es orientativa y su disponibilidad puede variar.
+          </p>
+        </main>
+      </div>
+    );
+  }
