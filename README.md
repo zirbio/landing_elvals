@@ -84,37 +84,35 @@ vals-novia-landing/
 - **Conversion Focused**: CTAs prominentes y formulario simplificado
 - **Modern UI**: Bordes redondeados, sombras suaves, efectos de blur
 
-## 📧 Integración de Email
+## 📧 Configuración de Email (INCLUIDA)
 
-Actualmente el formulario simula el envío de emails. Para integrar un servicio real:
+El sistema de email está **completamente implementado** con Resend. Solo necesitas configurarlo:
 
-1. **Reemplazar la función `handleSubmit`** en `src/app/page.tsx`
-2. **Agregar servicio de email** (SendGrid, Resend, Nodemailer, etc.)
-3. **Configurar variables de entorno** para las credenciales del servicio
+### 🚀 Configuración Rápida (15 minutos)
 
-```typescript
-// Ejemplo de integración con SendGrid
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setIsSubmitting(true);
+1. **Lee la guía completa:** [CONFIGURACION_EMAIL.md](./CONFIGURACION_EMAIL.md)
+2. **Crea cuenta gratuita** en [Resend](https://resend.com) (3,000 emails/mes gratis)
+3. **Obtén tu API key** del dashboard
+4. **Crea archivo `.env.local`:**
+   ```bash
+   RESEND_API_KEY=tu_api_key_aqui
+   BUSINESS_EMAIL=tu-email@dominio.com
+   ```
 
-  try {
-    const response = await fetch('/api/send-email', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
-    });
+### ✨ Funcionalidades Email
 
-    if (response.ok) {
-      setIsSuccess(true);
-    }
-  } catch (error) {
-    console.error('Error:', error);
-  } finally {
-    setIsSubmitting(false);
-  }
-};
-```
+- **Email para ti**: Notificación detallada con datos del cliente
+- **Email para la cliente**: Confirmación profesional automática
+- **Templates HTML**: Emails hermosos con el branding de la marca
+- **Validación completa**: Formularios seguros y protegidos
+- **Error handling**: Mensajes claros si algo falla
+
+### 📋 Lo que pasa al completar el formulario:
+
+1. ✅ **Validación** de datos en frontend y backend
+2. 📧 **Te llega un email** con todos los datos de la reserva
+3. 📬 **La cliente recibe confirmación** automática y profesional
+4. 🎯 **Todo es automático** - no necesitas hacer nada más
 
 ## 🚀 Deployment
 

@@ -45,18 +45,34 @@ npm run start   # Start production server
 npm run lint    # Run ESLint
 ```
 
-## Form Integration
+## Email Integration (IMPLEMENTED)
 
-The reservation modal includes:
+The email system is fully implemented using Resend API:
+
+### Form Fields
 - Name (required)
 - Email (required)
 - Wedding date (optional)
 - Message/details (optional)
 
-Currently simulates email sending with 2-second delay. To integrate with real email service:
-1. Replace the `handleSubmit` function in `page.tsx`
-2. Add email service API (SendGrid, Resend, etc.)
-3. Update environment variables for email configuration
+### Email Functionality
+- **Business notification email**: Sent to business owner with all form data
+- **Client confirmation email**: Professional confirmation sent to the client
+- **HTML templates**: Beautiful, branded email templates included
+- **Error handling**: Comprehensive validation and error handling
+- **Environment variables**: Secure API key management
+
+### Setup Required
+1. Create Resend account (free tier: 3,000 emails/month)
+2. Get API key from Resend dashboard
+3. Create `.env.local` file with `RESEND_API_KEY` and `BUSINESS_EMAIL`
+4. See `CONFIGURACION_EMAIL.md` for complete setup guide
+
+### API Endpoint
+- **Route**: `/api/send-email`
+- **Method**: POST
+- **Validation**: Backend validation for all inputs
+- **Rate limiting**: Built-in protection against spam
 
 ## Key Configuration
 

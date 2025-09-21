@@ -29,11 +29,30 @@ export default function Landing() {
       e.preventDefault();
       setIsSubmitting(true);
 
-      // Simular envío de email
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      try {
+        const response = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
 
-      setIsSubmitting(false);
-      setIsSuccess(true);
+        const data = await response.json();
+
+        if (response.ok) {
+          setIsSuccess(true);
+          console.log('Email enviado correctamente:', data);
+        } else {
+          console.error('Error del servidor:', data.error);
+          alert(`Error: ${data.error || 'No se pudo enviar el email'}`);
+        }
+      } catch (error) {
+        console.error('Error enviando email:', error);
+        alert('Error de conexión. Por favor, intenta de nuevo.');
+      } finally {
+        setIsSubmitting(false);
+      }
     };
 
     return (
