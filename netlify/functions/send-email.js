@@ -29,6 +29,19 @@ exports.handler = async (event, context) => {
   }
 
   try {
+    // Verificar que las variables de entorno estén configuradas
+    const businessEmail = process.env.BUSINESS_EMAIL;
+    if (!businessEmail) {
+      return {
+        statusCode: 500,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({ error: 'BUSINESS_EMAIL no está configurado en las variables de entorno' })
+      };
+    }
+
     // Inicializar Resend con la API key de las variables de entorno
     const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -65,8 +78,8 @@ exports.handler = async (event, context) => {
     // Email para el negocio (notificación de nueva reserva)
     const businessEmailData = {
       from: 'onboarding@resend.dev', // Dominio verificado de Resend para pruebas
-      reply_to: process.env.BUSINESS_EMAIL || 'elvalsdelanovia@gmail.com',
-      to: ['elvalsdelanovia@gmail.com'], // Email verificado en Resend
+      reply_to: businessEmail,
+      to: [businessEmail], // Email verificado en Resend
       subject: `🌸 Nueva Solicitud de Reserva - ${name}`,
       html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background-color: #F4E7E4; padding: 20px; border-radius: 16px;">
@@ -133,7 +146,7 @@ exports.handler = async (event, context) => {
     // Email de confirmación para la futura novia
     const confirmationEmailData = {
       from: 'onboarding@resend.dev',
-      reply_to: process.env.BUSINESS_EMAIL || 'elvalsdelanovia@gmail.com',
+      reply_to: businessEmail,
       to: [email],
       subject: '🌸 ¡Solicitud recibida! - El Vals de la Novia',
       html: `
@@ -182,7 +195,7 @@ exports.handler = async (event, context) => {
               <p style="color: #64748b; font-size: 14px; margin: 0;">
                 <strong>El Vals de la Novia</strong><br>
                 Asesoría Boutique • 60-90 min<br>
-                <a href="mailto:elvalsdelanovia@gmail.com" style="color: #1F1F1F;">elvalsdelanovia@gmail.com</a>
+                <a href="mailto:${businessEmail}" style="color: #1F1F1F;">${businessEmail}</a>
               </p>
             </div>
           </div>
@@ -193,22 +206,22 @@ exports.handler = async (event, context) => {
     console.log('🔄 Enviando emails...');
 
     // Enviar primero el email de negocio
-    const businessEmail = await resend.emails.send(businessEmailData);
+    const businessEmailResult = await resend.emails.send(businessEmailData);
 
     // Esperar 600ms para evitar rate limiting (máximo 2 req/segundo)
     await new Promise(resolve => setTimeout(resolve, 600));
 
     // Enviar email de confirmación
-    const confirmationEmail = await resend.emails.send(confirmationEmailData);
+    const confirmationEmailResult = await resend.emails.send(confirmationEmailData);
 
     console.log('📧 Respuesta completa de Resend:', {
-      businessEmail: businessEmail,
-      confirmationEmail: confirmationEmail
+      businessEmail: businessEmailResult,
+      confirmationEmail: confirmationEmailResult
     });
 
     // Check for errors in email sending
-    const businessEmailError = businessEmail.error;
-    const confirmationEmailError = confirmationEmail.error;
+    const businessEmailError = businessEmailResult.error;
+    const confirmationEmailError = confirmationEmailResult.error;
 
     if (businessEmailError || confirmationEmailError) {
       console.log('⚠️ Errores en el envío de emails:', {
@@ -225,8 +238,8 @@ exports.handler = async (event, context) => {
         },
         body: JSON.stringify({
           message: 'Emails procesados con advertencias',
-          businessEmailId: businessEmail.data?.id,
-          confirmationEmailId: confirmationEmail.data?.id,
+          businessEmailId: businessEmailResult.data?.id,
+          confirmationEmailId: confirmationEmailResult.data?.id,
           errors: {
             businessEmail: businessEmailError,
             confirmationEmail: confirmationEmailError
@@ -236,8 +249,8 @@ exports.handler = async (event, context) => {
     }
 
     console.log('✅ Emails enviados exitosamente:', {
-      businessEmailId: businessEmail.data?.id,
-      confirmationEmailId: confirmationEmail.data?.id
+      businessEmailId: businessEmailResult.data?.id,
+      confirmationEmailId: confirmationEmailResult.data?.id
     });
 
     return {
@@ -248,8 +261,8 @@ exports.handler = async (event, context) => {
       },
       body: JSON.stringify({
         message: 'Emails enviados correctamente',
-        businessEmailId: businessEmail.data?.id,
-        confirmationEmailId: confirmationEmail.data?.id
+        businessEmailId: businessEmailResult.data?.id,
+        confirmationEmailId: confirmationEmailResult.data?.id
       })
     };
 
