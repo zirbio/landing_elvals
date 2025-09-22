@@ -1,28 +1,65 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { Resend } from 'resend';
+const { Resend } = require('resend');
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+exports.handler = async (event, context) => {
+  // Solo permitir método POST
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
+      },
+      body: JSON.stringify({ error: 'Método no permitido' })
+    };
+  }
 
-export async function POST(request: NextRequest) {
+  // Manejar preflight OPTIONS
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
+      },
+      body: ''
+    };
+  }
+
   try {
-    const body = await request.json();
-    const { name, email, weddingDate, message } = body;
+    // Inicializar Resend con la API key de las variables de entorno
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    // Parsear el body de la request
+    const { name, email, weddingDate, message } = JSON.parse(event.body);
+
+    console.log('📧 Datos recibidos:', { name, email, weddingDate, message });
 
     // Validación básica
     if (!name || !email) {
-      return NextResponse.json(
-        { error: 'Nombre y email son requeridos' },
-        { status: 400 }
-      );
+      return {
+        statusCode: 400,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({ error: 'Nombre y email son requeridos' })
+      };
     }
 
     // Validar formato de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { error: 'Formato de email inválido' },
-        { status: 400 }
-      );
+      return {
+        statusCode: 400,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({ error: 'Formato de email inválido' })
+      };
     }
 
     // Email para el negocio (notificación de nueva reserva)
@@ -153,13 +190,7 @@ export async function POST(request: NextRequest) {
       `,
     };
 
-    // Enviar ambos emails con delay para evitar rate limiting
-    console.log('🔄 Enviando emails con configuración:', {
-      businessFrom: businessEmailData.from,
-      businessTo: businessEmailData.to,
-      confirmationFrom: confirmationEmailData.from,
-      confirmationTo: confirmationEmailData.to
-    });
+    console.log('🔄 Enviando emails...');
 
     // Enviar primero el email de negocio
     const businessEmail = await resend.emails.send(businessEmailData);
@@ -186,8 +217,13 @@ export async function POST(request: NextRequest) {
       });
 
       // Return partial success/error information
-      return NextResponse.json(
-        {
+      return {
+        statusCode: businessEmailError && confirmationEmailError ? 400 : 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({
           message: 'Emails procesados con advertencias',
           businessEmailId: businessEmail.data?.id,
           confirmationEmailId: confirmationEmail.data?.id,
@@ -195,41 +231,46 @@ export async function POST(request: NextRequest) {
             businessEmail: businessEmailError,
             confirmationEmail: confirmationEmailError
           }
-        },
-        { status: businessEmailError && confirmationEmailError ? 400 : 200 }
-      );
+        })
+      };
     }
 
     console.log('✅ Emails enviados exitosamente:', {
       businessEmailId: businessEmail.data?.id,
-      confirmationEmailId: confirmationEmail.data?.id,
-      businessEmailData: businessEmail.data,
-      confirmationEmailData: confirmationEmail.data
+      confirmationEmailId: confirmationEmail.data?.id
     });
 
-    return NextResponse.json(
-      {
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({
         message: 'Emails enviados correctamente',
         businessEmailId: businessEmail.data?.id,
         confirmationEmailId: confirmationEmail.data?.id
-      },
-      { status: 200 }
-    );
+      })
+    };
 
   } catch (error) {
     console.error('❌ Error detallado enviando emails:', {
       error: error,
-      message: error instanceof Error ? error.message : 'Error desconocido',
-      stack: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.stack : undefined) : undefined
+      message: error.message,
+      stack: error.stack
     });
 
-    return NextResponse.json(
-      {
-        error: 'Error interno del servidor',
-        message: error instanceof Error ? error.message : 'Error desconocido',
-        details: process.env.NODE_ENV === 'development' ? error : undefined
+    return {
+      statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       },
-      { status: 500 }
-    );
+      body: JSON.stringify({
+        error: 'Error interno del servidor',
+        message: error.message,
+        details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      })
+    };
   }
-}
+};

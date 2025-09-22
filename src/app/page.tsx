@@ -30,7 +30,13 @@ export default function Landing() {
       setIsSubmitting(true);
 
       try {
-        const response = await fetch('/api/send-email', {
+        // Detectar si estamos en desarrollo o producción
+        const isDevelopment = window.location.hostname === 'localhost';
+        const endpoint = isDevelopment
+          ? '/api/send-email'  // API Route para desarrollo
+          : '/.netlify/functions/send-email';  // Netlify Function para producción
+
+        const response = await fetch(endpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
