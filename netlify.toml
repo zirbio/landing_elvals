@@ -7,6 +7,10 @@
 # Configuración para Next.js export estático
 [build.environment]
   NODE_VERSION = "18"
+  # Configuración para excluir NODE_ENV del escaneo de secretos
+  SECRETS_SCAN_OMIT_KEYS = "NODE_ENV"
+  # Excluir directorios de build y cache del escaneo de secretos
+  SECRETS_SCAN_OMIT_PATHS = ".next/**,.next/cache/**,out/**,node_modules/**,*.md"
 
 # Redirects para SPA (Single Page Application)
 [[redirects]]
