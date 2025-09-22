@@ -72,9 +72,19 @@ Esta guía te explica paso a paso cómo desplegar tu landing page en Netlify con
 - Verifica que `RESEND_API_KEY` esté configurado
 - Redeploy después de añadir variables
 
+### **Error: "Cannot find module 'tailwindcss'"**
+- Verifica que Tailwind esté en `dependencies` (no en `devDependencies`)
+- Cambia el publish directory a `out` (no `.next`)
+- Si persiste, borra `node_modules` y `package-lock.json`, luego `npm install`
+
 ### **Error: "CORS"**
 - La función ya incluye headers de CORS
 - Si persiste, contacta soporte de Netlify
+
+### **Build fails after "Creating optimized build"**
+- Revisa el log completo de deployment en Netlify
+- Busca errores específicos después de esta línea
+- Generalmente indica problemas con dependencias
 
 ### **Emails no llegan**
 - Verifica que la API key de Resend sea válida
