@@ -12,12 +12,12 @@
   # Excluir directorios de build y cache del escaneo de secretos
   SECRETS_SCAN_OMIT_PATHS = ".next/**,.next/cache/**,out/**,node_modules/**,*.md"
 
-# Redirects para SPA (Single Page Application)
+# Redirects para SPA (Single Page Application) - remove all pages except static files
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  conditions = {Role = ["admin"]}
+  force = false
 
 # Configuración de funciones serverless
 [functions]
@@ -40,16 +40,6 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# Configuración específica para Next.js estático
+# Configuración específica para Next.js estático - disable processing since Next.js already optimizes
 [build.processing]
-  skip_processing = false
-[build.processing.css]
-  bundle = true
-  minify = true
-[build.processing.js]
-  bundle = true
-  minify = true
-[build.processing.html]
-  pretty_urls = true
-[build.processing.images]
-  compress = true
+  skip_processing = true
