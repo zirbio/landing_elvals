@@ -1,5 +1,6 @@
 const { Resend } = require('resend');
 
+// Netlify Function for email sending - Updated for proper deployment
 exports.handler = async (event, context) => {
   // Solo permitir método POST
   if (event.httpMethod !== 'POST') {
