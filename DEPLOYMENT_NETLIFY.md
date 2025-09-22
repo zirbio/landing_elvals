@@ -36,8 +36,8 @@ Esta guía te explica paso a paso cómo desplegar tu landing page en Netlify con
 
 2. **Añade estas variables**:
    ```
-   RESEND_API_KEY=re_cq9LY9cA_s1NNmcLjdNpNs8PnidmAYQjr
-   BUSINESS_EMAIL=elvalsdelanovia@gmail.com
+   RESEND_API_KEY=tu_resend_api_key_aqui
+   BUSINESS_EMAIL=tu_email_de_negocio@dominio.com
    NODE_ENV=production
    ```
 
@@ -54,7 +54,7 @@ Esta guía te explica paso a paso cómo desplegar tu landing page en Netlify con
 ### Test del formulario:
 1. Ve a tu sitio en Netlify (ej: `https://amazing-site-123.netlify.app`)
 2. Completa el formulario de reserva
-3. Deberías recibir el email en `elvalsdelanovia@gmail.com`
+3. Deberías recibir el email en tu email de negocio configurado
 
 ### Si NO funciona:
 1. **Check las Functions**: Ve a **Functions** en el dashboard de Netlify
@@ -88,7 +88,7 @@ Esta guía te explica paso a paso cómo desplegar tu landing page en Netlify con
 
 ### **Emails no llegan**
 - Verifica que la API key de Resend sea válida
-- Confirma que `elvalsdelanovia@gmail.com` esté verificado en Resend
+- Confirma que tu email de negocio esté verificado en Resend
 - Revisa los logs de la función en Netlify
 
 ## 📱 **URLs importantes**
@@ -100,7 +100,7 @@ Esta guía te explica paso a paso cómo desplegar tu landing page en Netlify con
 
 ## 🎯 **Dominio personalizado (Opcional)**
 
-Si tienes un dominio como `elvalsdelanovia.es`:
+Si tienes un dominio personalizado:
 
 1. **En Netlify**: Site settings → Domain management → Add custom domain
 2. **En tu proveedor DNS**: Apunta el dominio a Netlify
